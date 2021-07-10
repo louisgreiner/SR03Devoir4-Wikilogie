@@ -4,7 +4,7 @@ Développement du site web de l'association Wikilogie, côté administrateur. Ge
 
 Technologies utilisées : NodeJS (côté serveur), ReactJS (côté client), base de données en Postgresql.
 
-Lire ci-joint Rapport Devoir4 pour plus d'informations.
+Lire ci-joint Rapport SR03 Wikilogie.pdf pour plus d'informations.
 
 
 Auteurs: Louis Greiner et Benjamin Missaoui
