@@ -1,0 +1,258 @@
+openapi: "3.0.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Wikilogie Admin Dashboard API"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+- name: "operations"
+  description: "Operations on the tables"
+paths:
+  /operations:
+    get:
+      tags: 
+      - operations
+      description: "Selects row(s) from one table. Can be filtered with a where condition."
+      parameters:
+      - in: query
+        name: tableName
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: columnNames
+        schema:
+          type: array
+          items:
+            type: string
+          nullable: true
+      - in: query
+        name: whereConditions
+        schema:
+          type: array
+          items:
+            type: string
+          nullable: true
+      responses:
+        "200":
+          description: "Operation success."
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - $ref: "#/components/schemas/User"
+                  - $ref: "#/components/schemas/Field"
+                  - $ref: "#/components/schemas/UserField"
+                  - $ref: "#/components/schemas/Quizz"
+                  - $ref: "#/components/schemas/Follow"
+                  - $ref: "#/components/schemas/ArticleToVerify"
+        "500":
+          description: "Server Error."
+    post:
+      tags:
+      - operations
+      description: "Insert a new row into a table"
+      requestBody:
+        content: 
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/InsertBody"
+      responses:
+        "200":
+          description: "Operation success."
+          content: 
+            application/json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/User"
+                - $ref: "#/components/schemas/Field"
+                - $ref: "#/components/schemas/UserField"
+                - $ref: "#/components/schemas/Quizz"
+                - $ref: "#/components/schemas/Follow"
+                - $ref: "#/components/schemas/ArticleToVerify"
+        "500":
+          description: "Server Error."
+    put:
+      tags:
+      - operations
+      description: "Update a table"
+      requestBody:
+        content: 
+          'application/json':
+            schema:
+              $ref: "#/components/schemas/UpdateBody"
+      responses:
+        '200':
+          description: "Operation success"
+          content: 
+            application/json:
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/User"
+                - $ref: "#/components/schemas/Field"
+                - $ref: "#/components/schemas/UserField"
+                - $ref: "#/components/schemas/Quizz"
+                - $ref: "#/components/schemas/Follow"
+                - $ref: "#/components/schemas/ArticleToVerify"
+        "500":
+          description: "Server Error."
+    delete:
+      tags:
+      - operations
+      description: "Deletes one or several rows from a table"
+      parameters:
+        - in: query
+          name: tableName
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: whereConditions
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Operation success"
+          content: 
+            application/json: 
+              example: "Delete success."
+        "500":
+          description: "Server Error."
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+        login:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        emailConfirmed:
+          type: integer
+        isAdmin:
+          type: integer
+      required:
+      - userId
+      - login
+      - password
+      - email
+      - emailConfirmed
+      - isAdmin
+    Field:
+      type: object
+      properties:
+        field:
+          type: string
+      required:
+      - field
+    UserField:
+      type: object
+      properties:
+        userId:
+          type: integer
+        field:
+          type: string
+      required:
+      - userId
+      - field
+    Quizz:
+      type: object
+      properties:
+        userId:
+          type: integer
+        quizz:
+          type: string
+        title:
+          type: string
+        score:
+          type: integer
+      required:
+      - userId
+      - quizz
+      - title
+      - score
+    Follow:
+      type: object
+      properties:
+        userId:
+          type: integer
+        following:
+          type: integer
+      required:
+      - userId
+      - following
+    ArticleToVerify:
+      type: object
+      properties:
+        articleId:
+          type: string
+        title:
+          type: string
+        author:
+          type: integer
+        reason:
+          type: string
+        isVerified:
+          type: integer
+        reportDate:
+          type: string
+          format: date-time
+        verificationDate:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          enum: [0, 1]
+        verifiedBy:
+          type: integer
+      required:
+      - articleId
+      - title
+      - author
+      - reason
+      - isVerified
+      - dateReport
+      - dateVerification
+      - status
+      - verifiedBy
+    InsertBody:
+      type: object
+      properties:
+        tableName:
+          type: string
+        values:
+          type: array
+          items: 
+            type: string
+        columnNames:
+          type: array
+          items: 
+            type: string
+      required:
+      - tableName
+      - values
+    UpdateBody:
+      type: object
+      properties:
+        tableName:
+          type: string
+        setStatement:
+          type: string
+        whereConditions:
+          type: string
+      required:
+      - tableName
+      - setStatement
+      - whereCondition

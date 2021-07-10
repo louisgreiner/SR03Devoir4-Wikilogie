@@ -1,0 +1,38 @@
+.center-div
+{
+  margin: 0 auto;
+  /* max-width: 700px;
+  height: 100px;
+  background-color: #ccc;
+  border-radius: 3px; */
+}
+
+Button {
+  background-color: "#4443BB"
+}
+
+#toast{
+  position:fixed;
+  top: 50px;;
+  left:50%;
+  transform:translate(-50%);
+  background-color:rgb(159, 255, 172);
+  color:rgb(0, 0, 0);
+  padding:16px;
+  border-radius:4px;
+  text-align:center;
+  z-index:1;
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+  visibility:hidden;
+  opacity:0;
+}
+
+#toast.show{
+  visibility:visible;
+  animation:fadeInOut 5s;
+}
+
+@keyframes fadeInOut{
+  5%,95%{opacity:1;top:150px}
+  15%,85%{opacity:1;top:100px}
+}
